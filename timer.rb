@@ -1,16 +1,18 @@
 class Timer
+  attr_reader :sleep_interval, :next_event
   def initialize
-    @sleep_interval = 9
-    @ft = Time.now + 9
-    puts "It is now #{Time.now}"
-    puts "ft is set to #{@ft}"
+    @sleep_interval = 5
+  end
+
+  def enqueue(event)
+    @next_event = event
   end
 
   def run
     @running = true
     while @running do
-      if Time.now.to_i >= @ft.to_i
-        trigger_event
+      if Time.now.to_i >= @next_event.time.to_i
+        trigger @next_event
         @running = false
       end
       sleep_a_little
@@ -23,7 +25,8 @@ class Timer
     puts "Awoke from sleep at #{Time.now}"
   end
 
-  def trigger_event
+  def trigger(event)
+    event.execute
     puts "Triggered event at #{Time.now}"
   end
 end

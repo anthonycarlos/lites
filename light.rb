@@ -6,3 +6,4 @@ class Light
     `gpio write 0 0`
   end
 end
+
