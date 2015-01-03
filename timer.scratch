@@ -1,0 +1,15 @@
+now = Time.now
+puts "It is now #{now}"
+ft = now + 9
+puts "ft is set to #{ft}"
+
+running = true
+while running do
+  if Time.now.to_i >= ft.to_i
+    puts "Triggered event at #{Time.now}"
+    running = false
+  end
+  puts "Sleeping 5"
+  sleep 5
+  puts "Awoke from sleep"
+end
