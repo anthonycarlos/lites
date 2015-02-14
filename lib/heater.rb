@@ -5,5 +5,8 @@ class Heater
   def self.off
     `gpio write 1 0`
   end
+  def self.state
+    `gpio read 1`.to_i > 0
+  end
 end
 
