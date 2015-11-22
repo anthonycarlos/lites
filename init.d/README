@@ -1,0 +1,5 @@
+# README
+
+# As root, copy this script into /etc/init.d/lites
+chmod +x /etc/init.d/lites
+update-rc.d lites default

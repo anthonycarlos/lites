@@ -1,0 +1,58 @@
+#!/bin/bash
+# /etc/init.d/lites
+
+### BEGIN INIT INFO
+# Provides:          lites
+# Required-Start:    $remote_fs $syslog
+# Required-Stop:     $remote_fs $syslog
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: This service is used to control landscaping lights
+# Description:       This service is used to control landscaping lights
+### END INIT INFO
+
+log_and_echo(){
+  echo $1
+  logger -t 'lites' $1
+}
+
+case "$1" in 
+    start)
+        log_and_echo "Starting lites."
+	modprobe w1-gpio
+	modprobe w1-therm
+
+	/usr/local/bin/gpio mode 0 out
+	/usr/local/bin/gpio mode 1 out
+	log_and_echo "Set gpio 0 and 1 mode to out."
+
+	/usr/local/bin/gpio write 0 1
+	log_and_echo "Closed relay 0."
+	/usr/local/bin/gpio write 1 1
+	log_and_echo "Closed relay 1."
+
+	/usr/local/bin/gpio write 0 0
+	log_and_echo "Opened relay 0."
+	/usr/local/bin/gpio write 1 0
+	log_and_echo "Opened relay 1."
+	
+	/usr/local/bin/gpio write 0 1
+	log_and_echo "Leaving lites on."
+        ;;
+    stop)
+        log_and_echo "Stopping lites."
+
+	/usr/local/bin/gpio write 0 0
+	log_and_echo "Opened relay 0."
+	/usr/local/bin/gpio write 1 0
+	log_and_echo "Opened relay 1."
+	log_and_echo "Lites are off."
+        ;;
+    *)
+        echo "Usage: /etc/init.d/lites start|stop"
+        exit 1
+        ;;
+esac
+
+exit 0
+
